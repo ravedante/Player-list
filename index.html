@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Vídeo Telegram</title>
+</head>
+<body>
+  <h2>Seu vídeo hospedado no Telegram:</h2>
+  <video id="player" controls width="100%" autoplay></video>
+
+  <script>
+    fetch("db.json")
+      .then(res => res.json())
+      .then(data => {
+        const fileId = data["file_4.mp4"].file_id;
+        const botToken = "7884145285:AAGCJVcrUONcvbGR1dAL4_vM-_VPEI9Hzjg";
+
+        fetch(`https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`)
+          .then(res => res.json())
+          .then(file => {
+            const filePath = file.result.file_path;
+            const videoUrl = `https://api.telegram.org/file/bot${botToken}/${filePath}`;
+            document.getElementById("player").src = videoUrl;
+          });
+      });
+  </script>
+</body>
+</html>
